@@ -10,6 +10,30 @@ class Room
   end
 
 
+  def guest_count
+    @occupants.length
+  end
+
+  def add_guest_to_room(guest)
+    if @occupants.length == (@capacity)
+      "Sorry this room is already full!"
+    else
+       @occupants << guest
+    end
+  end
+
+  def remove_guest_from_room(guest)
+    if @occupants.include?(guest)
+       @occupants.delete(guest)
+    else
+       "Sorry this guest is not in the room!"
+    end
+  end
+
+  def empty_room
+    @occupants.clear()
+  end
+
   def play_song
     #Once song is complete
     @playlist.shift
@@ -29,7 +53,7 @@ class Room
 
   def remove_from_playlist(song)
     if @playlist.length != 0
-      @playlist.delete(song)
+       @playlist.delete(song)
     else
       "Playlist is already empty - please select a song!"
     end
@@ -42,5 +66,9 @@ class Room
       @playlist.at(1)
     end
   end
+
+  #  def is_my_jam_playing
+  # #   @occupants.any? {|guest| guest[:fave_song] == "The Winner Takes It All"}
+  #  end
 
 end

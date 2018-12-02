@@ -10,7 +10,7 @@ class Guest
 
   def my_jam(song)
     if @fave_song == song
-      "OMG this is my jam!!!"
+      "#{@name}: OMG this is my jam!!!"
     else
       return false
     end

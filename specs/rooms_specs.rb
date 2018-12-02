@@ -9,16 +9,18 @@ class RoomTest < MiniTest::Test
 
   def setup
     @song1 = Song.new("The Winner Takes It All")
-    @song2 = Song.new("Black Flanders")
-    @song3 = Song.new("Hallelujah")
+    @song2 = Song.new("SOS")
+    @song3 = Song.new("Fernando")
     @playlist1 = [@song1, @song2]
 
     @guest1 = Guest.new("Jimmy", 100.00, @song1)
     @guest2 = Guest.new("Kim", 500.00, @song2)
-    @guestlist1 = [@guest1, @guest2]
+    @guest3 = Guest.new("Chuck", 1000.00, @song3)
+    @guestlist1 = [@guest1, @guest2, @guest3]
 
     @room1 = Room.new("Red", 5, [], [])
-    @room2 = Room.new("Pink", 7, [@guest1, @guest2], [@song1,@song2])
+    @room2 = Room.new("Pink", 2, [@guest1, @guest2], [@song1,@song2])
+    @room3 = Room.new("Pink", 2, [@guest1, @guest2], [@song1,@song3])
 
   end
 
@@ -36,6 +38,36 @@ class RoomTest < MiniTest::Test
 
   def test_room_has_occupants__occupied
     assert_equal([@guest1, @guest2], @room2.occupants)
+  end
+
+  def test_room_guest_count__empty
+    assert_equal(0, @room1.guest_count)
+  end
+
+  def test_room_guest_count__occupied
+    assert_equal(2, @room2.guest_count)
+  end
+
+  def test_add_guest_to_room__not_at_capacity
+    @room1.add_guest_to_room(@guest1)
+    assert_equal(1, @room1.guest_count)
+  end
+
+  def test_add_guest_to_room__at_capacity
+    assert_equal("Sorry this room is already full!", @room2.add_guest_to_room(@guest3))
+  end
+
+  def test_remove_guest_from_room__room_has_guest
+    @room2.remove_guest_from_room(@guest1)
+    assert_equal(1, @room2.guest_count)
+  end
+
+  def test_add_guest_to_room__room_has_no_guest
+    assert_equal("Sorry this guest is not in the room!", @room2.remove_guest_from_room(@guest3))
+  end
+
+  def test_empty_room
+    assert_equal([], @room2.empty_room)
   end
 
   def test_room_has_playlist__empty
@@ -78,5 +110,32 @@ class RoomTest < MiniTest::Test
   def test_show_up_next__with_songs
     assert_equal(@song2, @room2.show_up_next)
   end
+
+  # def test_room_is_playing_my_jam__playing_fave_song_1_guest
+  #    # Arrange
+  #
+  #    # Act
+  #
+  #    # Assert
+  #    assert_equal("Jimmy: OMG this is my jam!!!", @room3.is_my_jam_playing)
+  # end
+  #
+  # # def test_room_is_playing_my_jam__playing_fave_song_multiple_guest
+  # #    # Arrange
+  # #
+  # #    # Act
+  # #
+  # #    # Assert
+  # #    assert_equal("OMG this is my jam!!!", @room3.is_my_jam_playing)
+  # # end
+  #
+  # def test_room_is_playing_my_jam__not_playing_fave_song
+  #    # Arrange
+  #
+  #    # Act
+  #
+  #    # Assert
+  #    assert_equal("Nobody's jam is playing :(", @room3.is_my_jam_playing)
+  # end
 
 end

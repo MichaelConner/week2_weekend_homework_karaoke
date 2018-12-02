@@ -30,7 +30,7 @@ class GuestTest < MiniTest::Test
   end
 
   def test_my_jam__is_my_jam
-    assert_equal("OMG this is my jam!!!", @guest1.my_jam(@song1))
+    assert_equal("Jimmy: OMG this is my jam!!!", @guest1.my_jam(@song1))
   end
 
 end
